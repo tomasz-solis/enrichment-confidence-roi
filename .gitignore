@@ -1,0 +1,14 @@
+# environments
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# data
+data/raw/
+data/interim/
+
+# misc
+.DS_Store
+prd_checklist_stage_1.md
+stage_1_build_order.md

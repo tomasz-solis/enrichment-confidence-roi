@@ -1,0 +1,39 @@
+[project]
+name = "enrichment-confidence-roi"
+version = "0.1.0"
+description = "Causal and decision-science analysis of transaction enrichment confidence"
+readme = "README.md"
+requires-python = ">=3.11"
+
+dependencies = [
+  "numpy>=1.26",
+  "pandas>=2.1",
+  "scikit-learn>=1.4",
+  "statsmodels>=0.14",
+
+  "dowhy>=0.11",
+  "econml>=0.15",
+
+  "plotly>=5.18",
+  "nbformat>=5.9",
+  "kaleido>=0.2",
+
+  "tqdm>=4.66",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0",
+  "ipykernel>=6.29",
+  "jupyter>=1.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
