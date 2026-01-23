@@ -1,8 +1,7 @@
 """
-Shared utilities for reproducibility and file management.
+Utility functions for reproducibility and file ops.
 
-These are minimal helpers used throughout the project. Keep this module
-dependency-free to avoid circular imports.
+Kept minimal and dependency-free to avoid circular imports.
 """
 from __future__ import annotations
 
@@ -13,31 +12,22 @@ import numpy as np
 
 
 def set_seed(seed: int) -> None:
-    """
-    Set random seeds for reproducibility.
+    """Set random seeds for reproducibility.
 
-    This sets seeds for both Python's random module and numpy.
-    Call this at the start of any stochastic function.
+    Sets both random and numpy seeds.
+    Call at the start of any function with randomness.
 
     Args:
-        seed: Integer seed value.
-
-    Example:
-        >>> set_seed(7)
-        >>> np.random.rand(3)  # Will be the same every time with seed=7
+        seed: seed value
     """
     random.seed(seed)
     np.random.seed(seed)
 
 
 def ensure_dir(path: Path) -> None:
-    """
-    Create a directory if it doesn't exist.
+    """Create directory if it doesn't exist.
 
     Args:
-        path: Directory path to create.
-
-    Example:
-        >>> ensure_dir(PATHS.figures_dir)
+        path: directory to create
     """
     path.mkdir(parents=True, exist_ok=True)

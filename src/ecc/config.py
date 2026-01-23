@@ -1,16 +1,14 @@
 """
-Central configuration for paths and defaults.
+Config module - paths and default params.
 
-Imports:
+Usage:
     from ecc.config import PATHS, DEFAULTS
 
-Example:
-    # Use default paths
+    # Access paths
     figures_dir = PATHS.figures_dir
 
-    # Use default parameters
+    # Get defaults
     seed = DEFAULTS.seed
-    n_users = DEFAULTS.n_users
 """
 from __future__ import annotations
 
@@ -20,14 +18,12 @@ from pathlib import Path
 
 @dataclass(frozen=True)
 class Paths:
-    """
-    File system paths relative to repository root.
+    """Path configuration for the project.
 
-    Attributes:
-        root: Repository root (detected from this file).
-        data_dir: Where data lives (raw, interim, processed).
-        reports_dir: Where analysis outputs go.
-        figures_dir: Where plots are saved.
+    root: repo root directory
+    data_dir: data storage (raw/interim/processed)
+    reports_dir: analysis outputs
+    figures_dir: plot outputs
     """
     root: Path = Path(__file__).resolve().parents[2]
     data_dir: Path = root / "data"
@@ -37,18 +33,15 @@ class Paths:
 
 @dataclass(frozen=True)
 class Defaults:
-    """
-    Default parameters for synthetic data generation and analysis.
+    """Default parameters for data generation.
 
-    These values produce realistic behavior and ensure reproducibility.
-    Override them when calling generator or pipeline functions if needed.
+    Override these when calling generate_dataset() or pipeline functions.
 
-    Attributes:
-        seed: Random seed for reproducibility across runs.
-        n_users: Number of synthetic users to generate.
-        n_weeks: Number of weekly observations per user.
-        t0_week: First week of the exposure window for retention.
-        retention_week: Week at which retention is measured (t0 + 4).
+    seed: random seed for reproducibility
+    n_users: number of synthetic users
+    n_weeks: weekly observations per user
+    t0_week: start of exposure window
+    retention_week: when retention is measured (t0 + 4)
     """
     seed: int = 7
 

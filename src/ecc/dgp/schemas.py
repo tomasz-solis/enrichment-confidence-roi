@@ -1,3 +1,14 @@
+"""
+Schemas and validation for synthetic data tables.
+
+Use USER and USER_WEEK for consistent column names across the codebase.
+
+Usage:
+    from ecc.dgp.schemas import USER, USER_WEEK
+
+    df_users[USER.feed_quality]
+    validate_user_df(df_users)
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -8,6 +19,7 @@ import pandas as pd
 
 @dataclass(frozen=True)
 class UserCols:
+    """Column names for the user-level table."""
     user_id: str = "user_id"
     feed_quality: str = "feed_quality"
     txn_complexity: str = "txn_complexity"
@@ -20,6 +32,7 @@ class UserCols:
 
 @dataclass(frozen=True)
 class UserWeekCols:
+    """Column names for the user-week table."""
     user_id: str = "user_id"
     week: str = "week"
     confidence: str = "confidence"
@@ -27,6 +40,7 @@ class UserWeekCols:
     n_txn: str = "n_txn"
 
 
+# Global schema instances
 USER = UserCols()
 USER_WEEK = UserWeekCols()
 
@@ -54,6 +68,16 @@ def _require_range(
 
 
 def validate_user_df(df_users: pd.DataFrame) -> None:
+    """Validate user-level dataframe.
+
+    Checks columns, nulls, and value ranges.
+
+    Args:
+        df_users: user table to validate
+
+    Raises:
+        ValueError: if validation fails
+    """
     required = [
         USER.user_id,
         USER.feed_quality,
@@ -73,6 +97,14 @@ def validate_user_df(df_users: pd.DataFrame) -> None:
 
 
 def validate_user_week_df(df_user_week: pd.DataFrame) -> None:
+    """Validate user-week dataframe.
+
+    Args:
+        df_user_week: user-week table to validate
+
+    Raises:
+        ValueError: if validation fails
+    """
     required = [
         USER_WEEK.user_id,
         USER_WEEK.week,
