@@ -1,3 +1,18 @@
+"""
+Synthetic data generation with controlled confounding.
+
+Implements the DGP from docs/stage1_dgp_design.md.
+Confounding is intentional so we can validate causal estimators.
+
+Generates two tables:
+  - User-level: traits and retention
+  - User-week: confidence, edit rates, txn counts
+
+Usage:
+    from ecc.dgp.generate import generate_dataset
+
+    df_users, df_user_week = generate_dataset(n_users=10_000, seed=7)
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -11,10 +26,12 @@ from ecc.utils import set_seed
 
 
 def _sigmoid(x: np.ndarray) -> np.ndarray:
+    """Map latent scores to [0, 1] via logistic function."""
     return 1.0 / (1.0 + np.exp(-x))
 
 
 def _zscore(x: np.ndarray) -> np.ndarray:
+    """Standardize to mean 0, std 1."""
     mu = np.mean(x)
     sigma = np.std(x)
     if sigma == 0:
@@ -24,6 +41,27 @@ def _zscore(x: np.ndarray) -> np.ndarray:
 
 @dataclass(frozen=True)
 class DGPParams:
+    """Ground-truth parameters for data generation.
+
+    Controls causal effects and confounding strength.
+    Adjust to test estimators under different scenarios.
+
+    Confidence model:
+        alpha_c, b_f, b_c, b_e: control how feed quality, complexity,
+                                 and engagement affect confidence
+        sigma_c_week: weekly noise
+
+    Edit rate model:
+        tau_e: CAUSAL EFFECT of confidence on edits (ground truth)
+        g_c, g_e, g_f: confounding effects
+        sigma_e: noise
+
+    Retention model:
+        tau_r: CAUSAL EFFECT of confidence on retention (ground truth)
+        kappa_r: effect of edits on retention
+        delta_e, delta_f, delta_c: confounding
+        sigma_r: noise
+    """
     # confidence model
     alpha_c: float = 1.0
     b_f: float = 1.2
